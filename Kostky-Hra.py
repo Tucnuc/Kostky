@@ -2,15 +2,15 @@ import time
 import random
 
 # Listy
-loc = []
-hozenaCisla = []
-postupka  = [1,2,3,4,5,6]
-pi = set()
-dvojice = set()
+loc = []  # Značí v jaké části se uživatel nachází
+hozenaCisla = []    # Ukládá hozená čísla
+postupka  = [1,2,3,4,5,6]   # Pro porovnávání hodu, kdyby nastala postupka
+pi = set()  # Ukládá čísla z hozeneCisla, pro další porovnání, v případě že by existovala dvojice
+dvojice = set() # Ukládá počet dvojic
+zadavaneCislo = 1   # Značí kolikáté číslo uživatel zadává při manuálním zadávání
 
-# Proměnné počtu bodů
+# Proměnná počtu bodů
 mainPoints = 0
-secondaryPoints = 0
 
 # Textové funkce
 def postText(text, zpozdeni=0.05):
@@ -50,7 +50,7 @@ def secondaryPocet(fi, ro, points2):    # Úplně to samé jak předchozí funkc
     else:
         return False
 
-
+# Random úvod
 postText("\033[1mVítejte!\033[0m")
 time.sleep(0.8)
 postText("Děkujeme za zakoupení naší kostkové hry.")
@@ -71,7 +71,24 @@ time.sleep(0.5)
 postText("1 hráče.")
 time.sleep(1)
 print("")
-loc.append("hod")
+loc.append("gamemode")
+
+# Vybírání hracího módu
+if "gamemode" in loc:
+    postText("\033[1mVybírání hracího módu\033[0m")
+    time.sleep(0.8)
+    gamemodeInput = str(postInput("Chcete nechat kostky generovat náhodně nebo zadávat čísla sami? \033[1m[1 - náhodné generování, 2 - manuální zadávání]\033[0m: "))
+    time.sleep(0.8)
+    print("")
+    if gamemodeInput == "1":
+        loc.clear()
+        loc.append("hod")
+    elif gamemodeInput == "2":
+        loc.clear()
+        loc.append("manual")
+    else:
+        postText2("Na shledanou.")
+        loc.clear()
 
 # Házecí proces
 if "hod" in loc:
@@ -81,19 +98,43 @@ if "hod" in loc:
     if check.strip() == "":
         time.sleep(0.2)
         print("")
-        loc.remove("hod")
-        loc.append("magic")
+        loc.clear()
+        loc.append("losovani")
     else:
         postText2("Na shledanou.")
-        loc.remove("hod")
+        loc.clear()
 
+# Proces zadávání čísel manuálně
+if "manual" in loc:
+    for _ in range(6):
+        manualCisla = postInput(f"Zadejte prosím {zadavaneCislo}. číslo \033[1m[1 - 6]\033[0m: ")
+        if int(manualCisla) < 1 or int(manualCisla) > 6:
+            time.sleep(0.5)
+            print("")
+            postText("Zadal si špatné číslo. Za trest se hra ukončí.")
+            loc.clear()
+            break
+        else:    
+            zadavaneCislo += 1
+            hozenaCisla.append(int(manualCisla))
+    if len(hozenaCisla) == 6:
+        time.sleep(0.8)
+        print("")
+        loc.clear()
+        loc.append("magic")
+
+# Generace čísel
+if "losovani" in loc:
+    for _ in range(6):
+        cislo = random.randint(1,6)
+        hozenaCisla.append(cislo)
+    loc.clear()
+    loc.append("magic")
+    
 # Procesy sčítání bodů
 if "magic" in loc:
 
     # Dramatický text
-    for _ in range(6):
-        cislo = random.randint(1,6)
-        hozenaCisla.append(cislo)
     postText2("Vezmeš kostky. ")
     time.sleep(0.8)
     postText2("Napřáhneš se a hodíš. ")
@@ -175,7 +216,7 @@ postText2("Sčítáme")
 time.sleep(0.25)
 postText("...",0.25)
 time.sleep(0.8)
-postText("Sčítání bylo úspěšně dokončeno.")
+postText("Sčítání bylo \033[1múspěšně\033[0m dokončeno.")
 time.sleep(0.8)
 print("")
 postText2("Získali jste celkem")
