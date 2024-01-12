@@ -2,12 +2,13 @@ import time
 import random
 
 # Listy
-loc = []  # Značí v jaké části se uživatel nachází
+loc = ["gamemode"]  # Značí v jaké části se uživatel nachází
 hozenaCisla = []    # Ukládá hozená čísla
 postupka  = [1,2,3,4,5,6]   # Pro porovnávání hodu, kdyby nastala postupka
 pi = set()  # Ukládá čísla z hozeneCisla, pro další porovnání, v případě že by existovala dvojice
 dvojice = set() # Ukládá počet dvojic
 zadavaneCislo = 1   # Značí kolikáté číslo uživatel zadává při manuálním zadávání
+currentGamemode = []    # Značí jaký herní mód si uživatel vybral
 
 # Proměnná počtu bodů
 mainPoints = 0
@@ -51,27 +52,27 @@ def secondaryPocet(fi, ro, points2):    # Úplně to samé jak předchozí funkc
         return False
 
 # Random úvod
-postText("\033[1mVítejte!\033[0m")
-time.sleep(0.8)
-postText("Děkujeme za zakoupení naší kostkové hry.")
-time.sleep(0.8)
-postText("Doufáme, že si ji užijete a přejeme vám \033[1mhodně štěstí\033[0m ve vašich budoucích hodech.")
-time.sleep(1)
-print("")
-startInput1 = postInput("Nejdříve vyberte, kolik chcete hráčů \033[1m[1 - ∞]\033[0m: ")
-time.sleep(0.8)
-print("")
-postText(" ̶̰̮̾͆̕ ̶̢͇̣́͌ ̸͉̖̲̻̩̟̙͖͊E̴̛̛͚̼͓̔̍̎̏͗͘r̵̟̼͎͆̊̆͂̽r̷̗̓̏̏̓̄o̴̠̔̒͂̕r̴̛̬̭̯͎̳̗͊̈́̑̈́ ̴̮̭̭̤̌͘͝o̸̢̰͉͎̹͖̞̓̉͑̋̇͜c̵̱͇̳̻̪̿́̌͋c̵̢̛̤̠͔͇͕͕̍̓̓͝͝ự̴͕͔̰̪̫̝́͑̀̾͠ṛ̴͚̖͓̭̱̿͌̎̈́ͅe̴̢̮̞̞͔̔͌̀d̵̝̤̃́̒̐͆ ̴̨͎̹̪͉̲̗̹̿́̍̔̊̎̚͠ ̷̨̝̬̩̤͋͐̍̽ ̸̧͎͇̳̍̈͜ͅ",0.015)
-time.sleep(1)
-print("")
-postText2("Nyní začneme hru pro")
-time.sleep(0.5)
-postText2(" . . . ")
-time.sleep(0.5)
-postText("1 hráče.")
-time.sleep(1)
-print("")
-loc.append("gamemode")
+# postText("\033[1mVítejte!\033[0m")
+# time.sleep(0.8)
+# postText("Děkujeme za zakoupení naší kostkové hry.")
+# time.sleep(0.8)
+# postText("Doufáme, že si ji užijete a přejeme vám \033[1mhodně štěstí\033[0m ve vašich budoucích hodech.")
+# time.sleep(1)
+# print("")
+# startInput1 = postInput("Nejdříve vyberte, kolik chcete hráčů \033[1m[1 - ∞]\033[0m: ")
+# time.sleep(0.8)
+# print("")
+# postText(" ̶̰̮̾͆̕ ̶̢͇̣́͌ ̸͉̖̲̻̩̟̙͖͊E̴̛̛͚̼͓̔̍̎̏͗͘r̵̟̼͎͆̊̆͂̽r̷̗̓̏̏̓̄o̴̠̔̒͂̕r̴̛̬̭̯͎̳̗͊̈́̑̈́ ̴̮̭̭̤̌͘͝o̸̢̰͉͎̹͖̞̓̉͑̋̇͜c̵̱͇̳̻̪̿́̌͋c̵̢̛̤̠͔͇͕͕̍̓̓͝͝ự̴͕͔̰̪̫̝́͑̀̾͠ṛ̴͚̖͓̭̱̿͌̎̈́ͅe̴̢̮̞̞͔̔͌̀d̵̝̤̃́̒̐͆ ̴̨͎̹̪͉̲̗̹̿́̍̔̊̎̚͠ ̷̨̝̬̩̤͋͐̍̽ ̸̧͎͇̳̍̈͜ͅ",0.015)
+# time.sleep(1)
+# print("")
+# postText2("Nyní začneme hru pro")
+# time.sleep(0.5)
+# postText2(" . . . ")
+# time.sleep(0.5)
+# postText("1 hráče.")
+# time.sleep(1)
+# print("")
+# loc.append("gamemode")
 
 # Vybírání hracího módu
 if "gamemode" in loc:
@@ -81,9 +82,13 @@ if "gamemode" in loc:
     time.sleep(0.8)
     print("")
     if gamemodeInput == "1":
+        currentGamemode.clear()
+        currentGamemode.append("automatic")
         loc.clear()
         loc.append("hod")
     elif gamemodeInput == "2":
+        currentGamemode.clear()
+        currentGamemode.append("manual")
         loc.clear()
         loc.append("manual")
     else:
@@ -135,18 +140,24 @@ if "losovani" in loc:
 if "magic" in loc:
 
     # Dramatický text
-    postText2("Vezmeš kostky. ")
-    time.sleep(0.8)
-    postText2("Napřáhneš se a hodíš. ")
-    time.sleep(0.8)
-    postText2("Po bližším prozkoumání si zjistil že")
-    time.sleep(0.5)
-    postText2(" . . . ")
-    time.sleep(0.5)
-    alfa = ', '.join(str(cislo) for cislo in hozenaCisla[:])
-    postText(f"si hodil \033[1m{alfa}\033[0m.")
-    time.sleep(1)
-    print("")
+    if "automatic" in currentGamemode:
+        postText2("Vezmeš kostky. ")
+        time.sleep(0.8)
+        postText2("Napřáhneš se a hodíš. ")
+        time.sleep(0.8)
+        postText2("Po bližším prozkoumání si zjistil že")
+        time.sleep(0.5)
+        postText2(" . . . ")
+        time.sleep(0.5)
+        alfa = ', '.join(str(cislo) for cislo in hozenaCisla[:])
+        postText(f"si hodil \033[1m{alfa}\033[0m.")
+        time.sleep(1)
+        print("")
+    else:
+        alfa = ', '.join(str(cislo) for cislo in hozenaCisla[:])
+        postText(f"Nastavili jste čísla na \033[1m{alfa}\033[0m.")
+        time.sleep(1)
+        print("")
 
     # Jedničky
     pocetCisel(1,6,8000)
