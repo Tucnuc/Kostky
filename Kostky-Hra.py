@@ -9,21 +9,23 @@ pi = set()  # Ukládá čísla z hozeneCisla, pro další porovnání, v přípa
 dvojice = set() # Ukládá počet dvojic
 zadavaneCislo = 1   # Značí kolikáté číslo uživatel zadává při manuálním zadávání
 currentGamemode = []    # Značí jaký herní mód si uživatel vybral
+score = []  # Ukládá všechny počty bodů, kterých uživatel dosáhl
 
-# Proměnná počtu bodů
-mainPoints = 0
+# Proměnné
+mainPoints = 0  # Značí počet bodů
+highScore = 0   # Značí nejvyšší dosažený počet bodů
 
 # Textové funkce
-def postText(text, zpozdeni=0.05):
+def postText(text, zpozdeni=0.04):
     for char in text:
         print(char, end='', flush=True)
         time.sleep(zpozdeni)
     print()
-def postText2(text, zpozdeni=0.05):
+def postText2(text, zpozdeni=0.04):
     for char in text:
         print(char, end='', flush=True)
         time.sleep(zpozdeni)
-def postInput(prompt, zpozdeni=0.05):
+def postInput(prompt, zpozdeni=0.04):
     postText2(prompt, zpozdeni)
     user_input = input()
     return user_input
@@ -199,6 +201,8 @@ while True:
         pocetCisel(6,6,4800)
         
         # Tři dvojice
+        pi.clear()
+        dvojice.clear()
         for omega in hozenaCisla:
             if omega in pi:
                 dvojice.add(omega)
@@ -310,6 +314,19 @@ while True:
             time.sleep(0.8)
             postText("\033[1mJen tak dál!\033[0m")
         
+        # Sdělí nejvyšší dosáhnutý počet bodů
+        time.sleep(1)
+        print("")
+        score.append(mainPoints)
+        if max(score) > highScore:
+            highScore = 0
+            highScore += max(score)
+            postText2(f"Váš nový největší počet bodů je: \033[1m{highScore} bodů\033[0m. ")
+            time.sleep(0.8)
+            postText("\033[1mGratulujeme!\033[0m")
+        else:
+            postText(f"Váš největší počet bodů je: \033[1m{highScore} bodů\033[0m.")
+
         # Přesunutí uživatele do pokračovací sekce
         time.sleep(1.5)
         print("")
@@ -325,6 +342,8 @@ while True:
         time.sleep(0.8)
         if hola == "1":
             hozenaCisla.clear()
+            pi.clear()
+            dvojice.clear()
             loc.clear()
             loc.append("gamemodeAsk")
             print("")
@@ -356,25 +375,3 @@ while True:
             postText("Na shledanou.")
             loc.clear()
             break
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
