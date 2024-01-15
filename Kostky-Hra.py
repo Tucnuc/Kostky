@@ -2,7 +2,7 @@ import time
 import random
 
 # Listy
-loc = ["gamemode"]  # Značí v jaké části se uživatel nachází
+loc = ["start"]  # Značí v jaké části se uživatel nachází
 hozenaCisla = []    # Ukládá hozená čísla
 postupka  = [1,2,3,4,5,6]   # Pro porovnávání hodu, kdyby nastala postupka
 pi = set()  # Ukládá čísla z hozeneCisla, pro další porovnání, v případě že by existovala dvojice
@@ -148,21 +148,21 @@ while True:
 
         # Dramatický text
         if "automatic" in currentGamemode:
-            postText2("Vezmeš kostky. ")
+            postText2("Vezmete kostky. ")
             time.sleep(0.8)
-            postText2("Napřáhneš se a hodíš. ")
+            postText2("Napřáhnete se a hodíte. ")
             time.sleep(0.8)
-            postText2("Po bližším prozkoumání si zjistil že")
+            postText2("Po bližším prozkoumání jste zjistil že")
             time.sleep(0.5)
             postText2(" . . . ")
             time.sleep(0.5)
             alfa = ', '.join(str(cislo) for cislo in hozenaCisla[:])
-            postText(f"si hodil \033[1m{alfa}\033[0m.")
+            postText(f"jste hodil \033[1m{alfa}\033[0m.")
             time.sleep(1)
             print("")
         else:
             alfa = ', '.join(str(cislo) for cislo in hozenaCisla[:])
-            postText(f"Nastavili jste čísla na \033[1m{alfa}\033[0m.")
+            postText(f"Nastavil jste čísla na \033[1m{alfa}\033[0m.")
             time.sleep(1)
             print("")
 
@@ -201,8 +201,6 @@ while True:
         pocetCisel(6,6,4800)
         
         # Tři dvojice
-        pi.clear()
-        dvojice.clear()
         for omega in hozenaCisla:
             if omega in pi:
                 dvojice.add(omega)
@@ -258,11 +256,14 @@ while True:
         elif mainPoints > 0 and mainPoints <= 100:
             postText2("Máte se ještě co učit. ")
             time.sleep(0.8)
-        elif mainPoints > 100 and mainPoints < 2000:
+        elif mainPoints > 100 and mainPoints <= 1000:
             postText2("Jde vidět, že už jste někdy hrál kostky. ")
             time.sleep(0.8)
-        elif mainPoints > 2000 and mainPoints < 8000:
-            postText2("Opravdu nádherný výkon! ")
+        elif mainPoints > 1000 and mainPoints <= 2500:
+            postText2("Nádherný výkon! ")
+            time.sleep(0.8)
+        elif mainPoints > 2500 and mainPoints < 8000:
+            postText2("Opravdu skvělý a nádherný výkon! ")
             time.sleep(0.8)
         else:
             postText2("Podařilo se vám hodit maximum bodů! ")
